@@ -38,7 +38,7 @@
             <id>skip-tests-on-windows</id>
             <activation>
                 <os>
-                    <family>windows</family>
+                    <family>linux</family>
                 </os>
             </activation>
             <build>

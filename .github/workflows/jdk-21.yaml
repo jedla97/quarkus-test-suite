@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        java: [ 21-ea+33 ]
+        java: [ 21-ea ]
     steps:
       - uses: actions/checkout@v3
       - name: Reclaim Disk Space
@@ -39,7 +39,7 @@ jobs:
     needs: build-dependencies
     strategy:
       matrix:
-        java: [ 21-ea+33 ]
+        java: [ 21-ea ]
         profiles: [ "root-modules,http-modules,security-modules,spring-modules",
                     "sql-db-modules",
                     "messaging-modules,websockets-modules,monitoring-modules,test-tooling-modules"]
@@ -89,7 +89,7 @@ jobs:
     needs: build-dependencies
     strategy:
       matrix:
-        java: [ 21-ea+33 ]
+        java: [ 21-ea ]
         image: [ "ubi-quarkus-graalvmce-builder-image:22.3-java17", "ubi-quarkus-mandrel-builder-image:22.3-java17" ]
         profiles: [ "root-modules,spring-modules",
                     "http-modules",
@@ -145,7 +145,7 @@ jobs:
     needs: build-dependencies
     strategy:
       matrix:
-        java: [ 21-ea+33 ]
+        java: [ 21-ea ]
     steps:
       - uses: actions/checkout@v3
       - name: Install JDK {{ matrix.java }}

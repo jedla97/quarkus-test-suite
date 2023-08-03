@@ -69,6 +69,7 @@ public abstract class AbstractAnalyticsIT {
         Set<String> properties = new HashSet<>();
         // Always provide fake analytics URI to avoid sending data.
         properties.add(formatBuildProperty(QUARKUS_ANALYTICS_URI_BASE_PROPERTY, QUARKUS_ANALYTICS_FAKE_URI_BASE));
+        properties.add(formatBuildProperty("net.bytebuddy.experimental", "true"));
         properties.addAll(Arrays.asList(buildProperties));
         return buildFunction.apply(properties.toArray(new String[] {}));
     }

@@ -200,7 +200,7 @@ jobs:
       - name: Set Mandrel version
         id: set-mandrel-version
         run: |
-          if( ${{ matrix.java }} -eq 17 ]] ) {
+          if( ${{ matrix.java }} -eq 17 ) {
             echo MANDREL_VERSION=mandrel-23.0.1.2-Final >> $GITHUB_OUTPUT
           }
           else {

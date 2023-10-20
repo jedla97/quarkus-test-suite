@@ -200,11 +200,12 @@ jobs:
       - name: Set Mandrel version
         id: set-mandrel-version
         run: |
-          if [[ ${{ matrix.java }} == 17 ]]; then
+          if( ${{ matrix.java }} -eq 17 ]] ) {
             echo MANDREL_VERSION=mandrel-23.0.1.2-Final >> $GITHUB_OUTPUT
-          else
+          }
+          else {
             echo MANDREL_VERSION=mandrel-latest >> $GITHUB_OUTPUT
-          fi
+          }
       - name: Download Maven Repo
         uses: actions/download-artifact@v3
         with:

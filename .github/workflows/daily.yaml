@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        java: [ 11 ]
+        java: [ 17 ]
     steps:
       - uses: actions/checkout@v4
       - name: Reclaim Disk Space
@@ -40,7 +40,7 @@ jobs:
     needs: build-dependencies
     strategy:
       matrix:
-        java: [ 11, 17 ]
+        java: [ 17, 21 ]
         profiles: [ "root-modules,http-modules,security-modules,spring-modules",
                    "sql-db-modules",
                    "messaging-modules,websockets-modules,monitoring-modules,test-tooling-modules"]
@@ -90,8 +90,8 @@ jobs:
     needs: build-dependencies
     strategy:
       matrix:
-        java: [ 11 ]
-        image: [ "ubi-quarkus-graalvmce-builder-image:jdk-17", "ubi-quarkus-mandrel-builder-image:23.0-java17" ]
+        java: [ 17 ]
+        image: [ "ubi-quarkus-graalvmce-builder-image:jdk-17", "ubi-quarkus-graalvmce-builder-image:jdk-21", "ubi-quarkus-mandrel-builder-image:23.0-java17", "ubi-quarkus-mandrel-builder-image:23.1-java21" ]
         profiles: [ "root-modules,spring-modules",
                    "http-modules",
                    "security-modules",
@@ -147,7 +147,7 @@ jobs:
     needs: build-dependencies
     strategy:
       matrix:
-        java: [ 11, 17 ]
+        java: [ 17, 21 ]
     steps:
       - uses: actions/checkout@v4
       - name: Install JDK {{ matrix.java }}
@@ -187,9 +187,7 @@ jobs:
     needs: build-dependencies
     strategy:
       matrix:
-        java: [ 11 ]
-        graalvm-version: [ "mandrel-23.0.1.2-Final" ]
-        graalvm-java-version: [ "17" ]
+        java: [ 17,21 ]
     steps:
       - uses: actions/checkout@v4
       - name: Install JDK {{ matrix.java }}
@@ -199,6 +197,14 @@ jobs:
           java-version: ${{ matrix.java }}
           check-latest: true
           cache: 'maven'
+      - name: Set Mandrel version
+        id: set-mandrel-version
+        run: |
+          if [[ ${{ matrix.java }} == 17 ]]; then
+            echo MANDREL_VERSION=mandrel-23.0.1.2-Final >> $GITHUB_OUTPUT
+          else
+            echo MANDREL_VERSION=mandrel-latest >> $GITHUB_OUTPUT
+          fi
       - name: Download Maven Repo
         uses: actions/download-artifact@v3
         with:
@@ -211,9 +217,8 @@ jobs:
         id: setup-graalvm
         uses: graalvm/setup-graalvm@v1
         with:
-          version: ${{ matrix.graalvm-version }}
-          java-version: ${{ matrix.graalvm-java-version }}
-          components: 'native-image'
+          version: ${{ steps.set-mandrel-version.outputs.MANDREL_VERSION }}
+          java-version: ${{ matrix.java }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
       - name: Configure Pagefile
         # Increased the page-file size due to memory-consumption of native-image command

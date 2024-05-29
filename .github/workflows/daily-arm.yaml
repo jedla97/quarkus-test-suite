@@ -12,8 +12,6 @@ jobs:
         java: [ 17 ]
     steps:
       - uses: actions/checkout@v4
-      - name: Reclaim Disk Space
-        run: .github/ci-prerequisites.sh
       - name: Install required tools
         run: brew install pigz
       - name: Install JDK {{ matrix.java }}
@@ -46,8 +44,6 @@ jobs:
                    "messaging-modules,websockets-modules,monitoring-modules,cache-modules,test-tooling-modules"]
     steps:
       - uses: actions/checkout@v4
-      - name: Reclaim Disk Space
-        run: .github/ci-prerequisites.sh
       - name: Install JDK {{ matrix.java }}
         uses: actions/setup-java@v4
         with:
@@ -100,8 +96,6 @@ jobs:
                    "messaging-modules,websockets-modules,monitoring-modules,test-tooling-modules,nosql-db-modules"]
     steps:
       - uses: actions/checkout@v4
-      - name: Reclaim Disk Space
-        run: .github/ci-prerequisites.sh
       - name: Install JDK {{ matrix.java }}
         uses: actions/setup-java@v4
         with:

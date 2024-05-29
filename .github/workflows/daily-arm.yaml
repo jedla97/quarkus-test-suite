@@ -12,8 +12,6 @@ jobs:
         java: [ 17 ]
     steps:
       - uses: actions/checkout@v4
-      - name: Install required tools
-        run: brew install pigz
       - name: Install JDK {{ matrix.java }}
         uses: actions/setup-java@v4
         with:
@@ -25,7 +23,7 @@ jobs:
           git clone https://github.com/quarkusio/quarkus.git && cd quarkus && ./mvnw -B -s .github/mvn-settings.xml clean install -Dquickly -Dno-test-modules -Prelocations
       - name: Tar Maven Repo
         shell: bash
-        run: tar -I 'pigz -9' -cf maven-repo.tgz -C ~ .m2/repository
+        run: tar -I -cf maven-repo.tgz -C ~ .m2/repository
       - name: Persist Maven Repo
         uses: actions/upload-artifact@v4
         with:

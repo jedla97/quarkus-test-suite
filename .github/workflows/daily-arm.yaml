@@ -23,7 +23,7 @@ jobs:
           git clone https://github.com/quarkusio/quarkus.git && cd quarkus && ./mvnw -B -s .github/mvn-settings.xml clean install -Dquickly -Dno-test-modules -Prelocations
       - name: Tar Maven Repo
         shell: bash
-        run: tar -I -cf maven-repo.tgz -C ~ .m2/repository
+        run: tar -cf maven-repo.tgz -C ~ .m2/repository
       - name: Persist Maven Repo
         uses: actions/upload-artifact@v4
         with:

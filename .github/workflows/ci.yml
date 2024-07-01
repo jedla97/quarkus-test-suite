@@ -17,7 +17,8 @@ jobs:
           CHANGED=""
           MODULES_ARG=""
 
-          CHANGED_FILE=$(echo ${{ steps.files.outputs.all_changed_and_modified_files }} | sed 's/\"/\\"/g')
+           # If changed file have some special character, its path is surrounded with quotes which causing the if statement fail
+          CHANGED_FILE=$(echo ${{ steps.files.outputs.all_changed_and_modified_files }} | sed 's/\"/\\"/')
           
           echo $CHANGED_FILE
 

@@ -17,7 +17,7 @@ jobs:
           CHANGED=""
           MODULES_ARG=""
 
-          CHANGED_FILE="${{ steps.files.outputs.all_changed_and_modified_files }}"//\"/\\\"
+          CHANGED_FILE=$(echo ${{ steps.files.outputs.all_changed_and_modified_files }} | sed 's/\"/\\"/g'
           
           echo $CHANGED_FILE
 

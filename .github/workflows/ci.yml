@@ -36,10 +36,12 @@ jobs:
           MODULES_ARG=""
 
           CHANGED_FILE=${steps.files.outputs.all_changed_and_modified_files//\"/\\\"}
+          
+          echo $CHANGED_FILE
 
           for module in $MODULES
           do
-            if [[ "${{ steps.files.outputs.all_changed_and_modified_files }}" =~ ("$module") ]] ; then
+            if [[ "$CHANGED_FILE" =~ ("$module") ]] ; then
                 CHANGED=$(echo $CHANGED" "$module)
             fi
           done

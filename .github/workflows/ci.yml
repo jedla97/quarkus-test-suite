@@ -1,6 +1,7 @@
 name: "Pull Request CI"
 on:
   - pull_request
+  - workflow_dispatch
 jobs:
   build-dependencies:
     name: Build Dependencies

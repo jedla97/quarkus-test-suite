@@ -47,7 +47,7 @@ public class YamlProvider implements MessageBodyReader<CityListDTO>, MessageBody
                     + mediaType.getSubtype());
             return this.mapper.readValue(inputStream, CityListDTO.class);
         } catch (Exception e) {
-            Log.error("Error reading YAML input", e);
+            Log.error("Error reading YAML inputs", e);
             throw new WebApplicationException("Error reading YAML input", e);
         }
     }

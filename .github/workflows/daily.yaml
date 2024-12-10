@@ -34,3 +34,4 @@ jobs:
         shell: pwsh
         run: |
           mvn -v
+          git status

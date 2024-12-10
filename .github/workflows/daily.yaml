@@ -17,8 +17,7 @@ jobs:
           java-version: ${{ matrix.java }}
           check-latest: true
       - name: Build in JVM mode
-        shell: pwsh
+        shell: bash
         run: |
-          Get-WinSystemLocale
-          [System.Environment]::SetEnvironmentVariable("JAVA_TOOL_OPTIONS", "-Dfile.encoding=UTF-8")
+          export JAVA_TOOL_OPTIONS="-Dfile.encoding=UTF-8"
           mvn -v

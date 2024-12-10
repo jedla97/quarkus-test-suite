@@ -32,4 +32,6 @@ jobs:
           cd ~/
           ls
           ./quarkus-dev-cli.bat
+          mkdir Îñţérñåţîöñåļîžåţîờñ
+          ls
           mvn -v

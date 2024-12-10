@@ -16,22 +16,16 @@ jobs:
           distribution: 'temurin'
           java-version: ${{ matrix.java }}
           check-latest: true
-      - name: Set UTF8
+      - name: Install Quarkus CLI
         shell: pwsh
         run: |
-          $linesToWrite = @"
-          @ECHO OFF
-          CHCP 65001
-          Start
-          Exit
-          "@
-          New-Item -Path "$env:USERPROFILE\test.bat" -ItemType File
-          Set-Content -Path "$env:USERPROFILE\test.bat" -Value $linesToWrite
-          get-content "$env:USERPROFILE\test.bat"
-          cd $env:USERPROFILE
-          ./test.bat
+          Invoke-WebRequest https://s01.oss.sonatype.org/content/repositories/snapshots/io/quarkus/quarkus-cli/999-SNAPSHOT/quarkus-cli-999-20241209.023002-1284-runner.jar -OutFile "$(pwd)\quarkus-cli-999-SNAPSHOT-runner.jar"
+          New-Item -Path "$(pwd)\quarkus-dev-cli.bat" -ItemType File
+          Set-Content -Path "%cd%\quarkus-dev-cli.bat" -Value 'java -jar "%cd%\quarkus-cli-999-SNAPSHOT-runner.jar" %*'
+          get-content "$(pwd)\quarkus-dev-cli.bat"
+          cd "$(pwd)"
+          ./quarkus-dev-cli.bat version
       - name: Build in JVM mode
         shell: pwsh
         run: |
           mvn -v
-          locale -a

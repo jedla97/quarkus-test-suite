@@ -20,4 +20,5 @@ jobs:
         shell: pwsh
         run: |
           Get-WinSystemLocale
-          mvn -v
+          JAVA_TOOL_OPTIONS=-Dfile.encoding=UTF-8
+          mvn -v -Dfile.encoding=UTF-8

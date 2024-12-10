@@ -16,8 +16,19 @@ jobs:
           distribution: 'temurin'
           java-version: ${{ matrix.java }}
           check-latest: true
+      - name: Install Quarkus CLI
+        shell: pwsh
+        run: |
+          $linesToWrite = @"
+          @ECHO OFF
+          CHCP 65001
+          "@
+          New-Item -Path "$env:USERPROFILE\quarkus-dev-cli.bat" -ItemType File
+          Set-Content -Path "$env:USERPROFILE\quarkus-dev-cli.bat" -Value $linesToWrite
+          get-content "$env:USERPROFILE\quarkus-dev-cli.bat"
       - name: Build in JVM mode
         shell: bash
         run: |
-          export JAVA_TOOL_OPTIONS="-Dfile.encoding=UTF-8"
+          cd C:\Users\runneradmin\
+          ./quarkus-dev-cli.bat
           mvn -v

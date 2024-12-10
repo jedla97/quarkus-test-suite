@@ -28,11 +28,9 @@ jobs:
           New-Item -Path "$env:USERPROFILE\test.bat" -ItemType File
           Set-Content -Path "$env:USERPROFILE\test.bat" -Value $linesToWrite
           get-content "$env:USERPROFILE\test.bat"
-      - name: Build in JVM mode
-        shell: bash
-        run: |
-          pushd ~/
+          cd $env:USERPROFILE
           ./test.bat
-          popd
-          export JAVA_TOOL_OPTIONS="-Dfile.encoding=cp65001"
+      - name: Build in JVM mode
+        shell: pwsh
+        run: |
           mvn -v

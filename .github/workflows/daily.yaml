@@ -29,5 +29,5 @@ jobs:
       - name: Build in JVM mode
         shell: bash
         run: |
-          ./~/test.bat
+          ./~\test.bat
           mvn -v

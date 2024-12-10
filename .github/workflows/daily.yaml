@@ -21,4 +21,4 @@ jobs:
         run: |
           Get-WinSystemLocale
           [System.Environment]::SetEnvironmentVariable("JAVA_TOOL_OPTIONS", "-Dfile.encoding=UTF-8")
-          mvn -v -Dfile.encoding=UTF-8
+          mvn -v

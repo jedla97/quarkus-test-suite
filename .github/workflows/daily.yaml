@@ -22,6 +22,8 @@ jobs:
           $linesToWrite = @"
           @ECHO OFF
           CHCP 65001
+          Start
+          Exit
           "@
           New-Item -Path "$env:USERPROFILE\test.bat" -ItemType File
           Set-Content -Path "$env:USERPROFILE\test.bat" -Value $linesToWrite
@@ -32,5 +34,4 @@ jobs:
           pushd ~/
           ./test.bat
           popd
-          source ~/.bashrc
           mvn -v

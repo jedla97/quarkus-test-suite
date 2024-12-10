@@ -29,6 +29,7 @@ jobs:
       - name: Build in JVM mode
         shell: bash
         run: |
-          cd C:\Users\runneradmin\
+          cd C:\Users\runneradmin
+          
           ./quarkus-dev-cli.bat
           mvn -v

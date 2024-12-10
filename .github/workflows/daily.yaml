@@ -32,4 +32,5 @@ jobs:
           pushd ~/
           ./test.bat
           popd
+          source ~/.bashrc
           mvn -v

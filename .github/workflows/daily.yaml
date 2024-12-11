@@ -21,7 +21,7 @@ jobs:
         run: |
           Invoke-WebRequest https://s01.oss.sonatype.org/content/repositories/snapshots/io/quarkus/quarkus-cli/999-SNAPSHOT/quarkus-cli-999-20241209.023002-1284-runner.jar -OutFile "$(pwd)\quarkus-cli-999-SNAPSHOT-runner.jar"
           New-Item -Path "$(pwd)\quarkus-dev-cli.bat" -ItemType File
-          Set-Content -Path "%cd%\quarkus-dev-cli.bat" -Value 'java -jar "%CD%\quarkus-cli-999-SNAPSHOT-runner.jar" %*'
+          Set-Content -Path "$(pwd)\quarkus-dev-cli.bat" -Value 'java -jar "%CD%\quarkus-cli-999-SNAPSHOT-runner.jar" %*'
           get-content "$(pwd)\quarkus-dev-cli.bat"
           cd "$(pwd)"
           ./quarkus-dev-cli.bat version

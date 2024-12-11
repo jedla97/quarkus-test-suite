@@ -28,8 +28,7 @@ jobs:
           New-Item -Path "$(pwd)\quarkus-dev-cli.bat" -ItemType File
           Set-Content -Path "$(pwd)\quarkus-dev-cli.bat" -Value 'java -jar "%HOMEDRIVE%%HOMEPATH%\.m2\repository\io\quarkus\quarkus-cli\999-SNAPSHOT\quarkus-cli-999-SNAPSHOT-runner.jar" %*'
           get-content "$(pwd)\quarkus-dev-cli.bat"
-          cd "$(pwd)"
-          ./quarkus-dev-cli.bat version
+          ./$(pwd)\quarkus-dev-cli.bat version
       - name: Build in JVM mode
         shell: pwsh
         run: |

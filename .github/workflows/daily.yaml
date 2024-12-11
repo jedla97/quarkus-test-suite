@@ -21,14 +21,14 @@ jobs:
         run: cp .github/quarkus-snapshots-mvn-settings.xml ~/.m2/settings.xml
       - name: Download Quarkus CLI
         shell: bash
-        run: mvn org.apache.maven.plugins:maven-dependency-plugin:get -Dartifact=io.quarkus:quarkus-cli:999-SNAPSHOT:jar:runner
+        run: mvn -B --no-transfer-progress org.apache.maven.plugins:maven-dependency-plugin:get -Dartifact=io.quarkus:quarkus-cli:999-SNAPSHOT:jar:runner
       - name: Install Quarkus CLI
         shell: pwsh
         run: |
           New-Item -Path "$(pwd)\quarkus-dev-cli.bat" -ItemType File
           Set-Content -Path "$(pwd)\quarkus-dev-cli.bat" -Value 'java -jar "%HOMEDRIVE%%HOMEPATH%\.m2\repository\io\quarkus\quarkus-cli\999-SNAPSHOT\quarkus-cli-999-SNAPSHOT-runner.jar" %*'
           get-content "$(pwd)\quarkus-dev-cli.bat"
-          ./$(pwd)\quarkus-dev-cli.bat version
+          ./quarkus-dev-cli.bat version
       - name: Build in JVM mode
         shell: pwsh
         run: |

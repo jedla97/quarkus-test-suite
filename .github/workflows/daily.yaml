@@ -16,12 +16,17 @@ jobs:
           distribution: 'temurin'
           java-version: ${{ matrix.java }}
           check-latest: true
+      - name: Set up Maven settings.xml # we need to do this because of CLI and external app tests does not propagate '-s' option
+        shell: bash
+        run: cp .github/quarkus-snapshots-mvn-settings.xml ~/.m2/settings.xml
+      - name: Download Quarkus CLI
+        shell: bash
+        run: mvn org.apache.maven.plugins:maven-dependency-plugin:get -Dartifact=io.quarkus:quarkus-cli:999-SNAPSHOT:jar:runner
       - name: Install Quarkus CLI
         shell: pwsh
         run: |
-          Invoke-WebRequest https://s01.oss.sonatype.org/content/repositories/snapshots/io/quarkus/quarkus-cli/999-SNAPSHOT/quarkus-cli-999-20241209.023002-1284-runner.jar -OutFile "$(pwd)\quarkus-cli-999-SNAPSHOT-runner.jar"
           New-Item -Path "$(pwd)\quarkus-dev-cli.bat" -ItemType File
-          Set-Content -Path "$(pwd)\quarkus-dev-cli.bat" -Value 'java -jar "%CD%\quarkus-cli-999-SNAPSHOT-runner.jar" %*'
+          Set-Content -Path "$(pwd)\quarkus-dev-cli.bat" -Value 'java -jar "%HOMEDRIVE%%HOMEPATH%\.m2\repository\io\quarkus\quarkus-cli\999-SNAPSHOT\quarkus-cli-999-SNAPSHOT-runner.jar" %*'
           get-content "$(pwd)\quarkus-dev-cli.bat"
           cd "$(pwd)"
           ./quarkus-dev-cli.bat version

@@ -32,4 +32,4 @@ jobs:
       - name: Build in JVM mode
         shell: pwsh
         run: |
-          mvn -v
+          mvn -B --no-transfer-progress -fae -s .github/quarkus-snapshots-mvn-settings.xml clean verify -f quarkus-cli -Dinclude.quarkus-cli-tests -Dts.quarkus.cli.cmd=$(pwd)\quarkus-dev-cli.bat -Dgh-action-disable-on-win

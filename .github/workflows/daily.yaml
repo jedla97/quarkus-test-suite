@@ -17,8 +17,8 @@ jobs:
           java-version: ${{ matrix.java }}
           check-latest: true
       - name: Set up Maven settings.xml # we need to do this because of CLI and external app tests does not propagate '-s' option
-        shell: bash
-        run: cp .github/quarkus-snapshots-mvn-settings.xml ~/.m2/settings.xml
+        shell: pwsh
+        run: Copy-Item -Path ".github/quarkus-snapshots-mvn-settings.xml" -Destination "$env:USERPROFILE/.m2/settings.xml"
       - name: Download Quarkus CLI
         shell: bash
         run: mvn -B --no-transfer-progress org.apache.maven.plugins:maven-dependency-plugin:get -Dartifact=io.quarkus:quarkus-cli:999-SNAPSHOT:jar:runner
@@ -32,4 +32,4 @@ jobs:
       - name: Build in JVM mode
         shell: pwsh
         run: |
-          mvn -B --no-transfer-progress -fae -s .github/quarkus-snapshots-mvn-settings.xml clean verify -f quarkus-cli -Dinclude.quarkus-cli-tests -Dts.quarkus.cli.cmd=$(pwd)\quarkus-dev-cli.bat -Dgh-action-disable-on-win
+          mvn -B --no-transfer-progress -fae -s .github/quarkus-snapshots-mvn-settings.xml clean verify -f quarkus-cli -Dinclude.quarkus-cli-tests -D"ts.quarkus.cli.cmd=$(pwd)\quarkus-dev-cli.bat" -Dgh-action-disable-on-win

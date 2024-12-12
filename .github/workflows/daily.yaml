@@ -38,4 +38,4 @@ jobs:
       - name: Build in JVM mode
         shell: bash
         run: |
-          mvn -B --no-transfer-progress -fae -s .github/quarkus-snapshots-mvn-settings.xml clean verify -f quarkus-cli -D"include.quarkus-cli-tests" -D"ts.quarkus.cli.cmd=$(pwd)\quarkus-dev-cli.bat" -D"gh-action-disable-on-win" -D"it.test=QuarkusCliVersionIT"
+          mvn -B --no-transfer-progress -fae -s .github/quarkus-snapshots-mvn-settings.xml clean verify -f quarkus-cli -D"include.quarkus-cli-tests" -D"ts.quarkus.cli.cmd=$(pwd)\quarkus-dev-cli.bat" -D"gh-action-disable-on-win"

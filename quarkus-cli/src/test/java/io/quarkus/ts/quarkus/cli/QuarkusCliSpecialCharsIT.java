@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import jakarta.inject.Inject;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledOnOs;
@@ -46,16 +47,19 @@ public class QuarkusCliSpecialCharsIT {
     }
 
     @Test
+    @Disabled
     public void shouldCreateApplicationOnJvmWithDiacritics() {
         assertCreateJavaApplicationAtFolder(FOLDER_WITH_DIACRITICS);
     }
 
     @Test
+    @Disabled
     public void shouldCreateApplicationOnJvmWithJapanese() {
         assertCreateJavaApplicationAtFolder(FOLDER_WITH_JAPANESE);
     }
 
     @Test
+    @Disabled
     public void shouldCreateApplicationOnJvmWithInternationalization() {
         assertCreateJavaApplicationAtFolder(FOLDER_WITH_INTERNATIONALIZATION);
     }

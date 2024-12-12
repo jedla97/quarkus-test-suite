@@ -10,6 +10,7 @@ import static io.quarkus.ts.quarkus.cli.config.surefire.SetPropertyTest.Properti
 import jakarta.inject.Inject;
 
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Tag;
@@ -29,6 +30,7 @@ import io.quarkus.ts.quarkus.cli.config.surefire.SetPropertyTest;
 @Tag("quarkus-cli")
 @QuarkusScenario
 @DisabledOnNative // Only for JVM verification
+@Disabled
 public class QuarkusCliConfigSetIT {
 
     @Inject

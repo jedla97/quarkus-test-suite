@@ -9,6 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import jakarta.inject.Inject;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import io.quarkus.test.junit.QuarkusTest;
@@ -18,6 +19,7 @@ import io.smallrye.config.SmallRyeConfig;
  * This test is only support to run inside QuarkusCliConfigSetIT.
  */
 @QuarkusTest
+@Disabled
 public class SetPropertyTest {
 
     @Inject

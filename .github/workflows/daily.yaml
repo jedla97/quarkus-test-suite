@@ -7,7 +7,7 @@ jobs:
     runs-on: windows-latest
     strategy:
       matrix:
-        java: [ 17 ]
+        java: [ 21 ]
     steps:
       - uses: actions/checkout@v4
       - name: Install JDK {{ matrix.java }}
@@ -36,5 +36,4 @@ jobs:
       - name: Build in JVM mode
         shell: bash
         run: |
-          export JAVA_TOOL_OPTIONS="-Dfile.encoding=UTF8"
           mvn -B --no-transfer-progress -fae -s .github/quarkus-snapshots-mvn-settings.xml clean verify -f quarkus-cli -D"include.quarkus-cli-tests" -D"ts.quarkus.cli.cmd=$(pwd)\quarkus-dev-cli.bat" -D"gh-action-disable-on-win"

@@ -30,7 +30,6 @@ import io.quarkus.ts.quarkus.cli.config.surefire.SetPropertyTest;
 @Tag("quarkus-cli")
 @QuarkusScenario
 @DisabledOnNative // Only for JVM verification
-@Disabled
 public class QuarkusCliConfigSetIT {
 
     @Inject

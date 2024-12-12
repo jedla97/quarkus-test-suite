@@ -47,19 +47,16 @@ public class QuarkusCliSpecialCharsIT {
     }
 
     @Test
-    @Disabled
     public void shouldCreateApplicationOnJvmWithDiacritics() {
         assertCreateJavaApplicationAtFolder(FOLDER_WITH_DIACRITICS);
     }
 
     @Test
-    @Disabled
     public void shouldCreateApplicationOnJvmWithJapanese() {
         assertCreateJavaApplicationAtFolder(FOLDER_WITH_JAPANESE);
     }
 
     @Test
-    @Disabled
     public void shouldCreateApplicationOnJvmWithInternationalization() {
         assertCreateJavaApplicationAtFolder(FOLDER_WITH_INTERNATIONALIZATION);
     }

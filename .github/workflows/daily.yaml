@@ -29,7 +29,7 @@ jobs:
         run: |
           $contentToAdd = @"
           @ECHO OFF
-          java -jar \"%HOMEDRIVE%%HOMEPATH%\.m2\repository\io\quarkus\quarkus-cli\999-SNAPSHOT\quarkus-cli-999-SNAPSHOT-runner.jar\" %*
+          java -jar %HOMEDRIVE%%HOMEPATH%\.m2\repository\io\quarkus\quarkus-cli\999-SNAPSHOT\quarkus-cli-999-SNAPSHOT-runner.jar %*
           "@
           New-Item -Path "$(pwd)\quarkus-dev-cli.bat" -ItemType File
           Set-Content -Path "$(pwd)\quarkus-dev-cli.bat" -Value $contentToAdd

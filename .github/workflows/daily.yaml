@@ -16,6 +16,8 @@ jobs:
           distribution: 'temurin'
           java-version: ${{ matrix.java }}
           check-latest: true
+      - name: Set code page to 65001
+        run: chcp 65001
       - name: Set up Maven settings.xml # we need to do this because of CLI and external app tests does not propagate '-s' option
         shell: pwsh
         run: Copy-Item -Path ".github/quarkus-snapshots-mvn-settings.xml" -Destination "$env:USERPROFILE/.m2/settings.xml"

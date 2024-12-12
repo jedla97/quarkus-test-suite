@@ -16,8 +16,6 @@ jobs:
           distribution: 'temurin'
           java-version: ${{ matrix.java }}
           check-latest: true
-      - name: Set code page to 65001
-        run: chcp 65001
       - name: Set up Maven settings.xml # we need to do this because of CLI and external app tests does not propagate '-s' option
         shell: pwsh
         run: Copy-Item -Path ".github/quarkus-snapshots-mvn-settings.xml" -Destination "$env:USERPROFILE/.m2/settings.xml"
@@ -38,4 +36,5 @@ jobs:
       - name: Build in JVM mode
         shell: bash
         run: |
+          export JAVA_TOOL_OPTIONS="-Dfile.encoding=UTF8"
           mvn -B --no-transfer-progress -fae -s .github/quarkus-snapshots-mvn-settings.xml clean verify -f quarkus-cli -D"include.quarkus-cli-tests" -D"ts.quarkus.cli.cmd=$(pwd)\quarkus-dev-cli.bat" -D"gh-action-disable-on-win"

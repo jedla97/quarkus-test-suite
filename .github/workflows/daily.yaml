@@ -27,11 +27,15 @@ jobs:
       - name: Install Quarkus CLI
         shell: pwsh
         run: |
+          $contentToAdd = @"
+          @ECHO OFF
+          java -jar \"%HOMEDRIVE%%HOMEPATH%\.m2\repository\io\quarkus\quarkus-cli\999-SNAPSHOT\quarkus-cli-999-SNAPSHOT-runner.jar\" %*
+          "@
           New-Item -Path "$(pwd)\quarkus-dev-cli.bat" -ItemType File
-          Set-Content -Path "$(pwd)\quarkus-dev-cli.bat" -Value 'java -jar "%HOMEDRIVE%%HOMEPATH%\.m2\repository\io\quarkus\quarkus-cli\999-SNAPSHOT\quarkus-cli-999-SNAPSHOT-runner.jar" %*'
+          Set-Content -Path "$(pwd)\quarkus-dev-cli.bat" -Value $contentToAdd
           get-content "$(pwd)\quarkus-dev-cli.bat"
           ./quarkus-dev-cli.bat version
       - name: Build in JVM mode
-        shell: pwsh
+        shell: bash
         run: |
           mvn -B --no-transfer-progress -fae -s .github/quarkus-snapshots-mvn-settings.xml clean verify -f quarkus-cli -D"include.quarkus-cli-tests" -D"ts.quarkus.cli.cmd=$(pwd)\quarkus-dev-cli.bat" -D"gh-action-disable-on-win" -D"it.test=QuarkusCliVersionIT"

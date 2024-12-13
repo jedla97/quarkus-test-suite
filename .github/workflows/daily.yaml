@@ -19,7 +19,7 @@ jobs:
       - name: Set up Maven settings.xml
         run: |
           Copy-Item -Path ".github\quarkus-snapshots-mvn-settings.xml" -Destination "$env:USERPROFILE\.m2\settings.xml"
-          Get-Content "$env:USERPROFILE\.m2\settings.xml"
+          dir "$env:USERPROFILE\.m2\"
       - name: Download Quarkus CLI
         shell: bash
         run: mvn -B --no-transfer-progress org.apache.maven.plugins:maven-dependency-plugin:get -Dartifact=io.quarkus:quarkus-cli:999-SNAPSHOT:jar:runner

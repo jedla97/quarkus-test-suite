@@ -14,6 +14,7 @@ import org.junit.jupiter.api.Test;
 
 import io.quarkus.test.junit.QuarkusTest;
 import io.smallrye.config.SmallRyeConfig;
+import org.junit.jupiter.api.condition.DisabledIfSystemProperty;
 
 /**
  * This test is only support to run inside QuarkusCliConfigSetIT.
@@ -35,6 +36,7 @@ public class SetPropertyTest {
     }
 
     @Test
+    @DisabledIfSystemProperty(named = "gh-action-disable-on-win", matches = "true", disabledReason = "Some windows don't have all language pack/locales so it causing it fail")
     void createPropertyCommand_EncryptValue_UseExistingEncryptionKey() {
         assertEquals(CREATE_3.propertyValue, config.getRawValue(CREATE_3.propertyName));
     }

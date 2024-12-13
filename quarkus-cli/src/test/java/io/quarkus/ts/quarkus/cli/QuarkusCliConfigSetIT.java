@@ -26,7 +26,6 @@ import io.quarkus.ts.quarkus.cli.config.surefire.SetPropertyTest;
 import org.junit.jupiter.api.condition.DisabledIfSystemProperty;
 
 @DisabledOnQuarkusVersion(version = "3\\.(9|10|11|12)\\..*", reason = "https://github.com/quarkusio/quarkus/pull/41203 merged in 3.13")
-@DisabledIfSystemProperty(named = "gh-action-disable-on-win", matches = "true", disabledReason = "Some windows don't have all language pack/locales so it causing it fail")
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class) // remember, this is stateful test as well as stateful cmd builder
 @Tag("QUARKUS-3456")
 @Tag("quarkus-cli")
@@ -87,6 +86,7 @@ public class QuarkusCliConfigSetIT {
 
     @Order(3)
     @Test
+    @DisabledIfSystemProperty(named = "gh-action-disable-on-win", matches = "true", disabledReason = "Some windows don't have all language pack/locales so it causing it fail")
     public void createPropertyCommand_EncryptValue_UseExistingEncryptionKey() {
         // configured props tested by SetPropertyTest#createPropertyCommand_EncryptValue_UseExistingEncryptionKey
         // use existing secret
@@ -181,6 +181,7 @@ public class QuarkusCliConfigSetIT {
 
     @Order(8)
     @Test
+    @DisabledIfSystemProperty(named = "gh-action-disable-on-win", matches = "true", disabledReason = "Some windows don't have all language pack/locales so it causing it fail")
     public void testQuarkusApplicationWithModifiedApplicationProperties() {
         configCommand.buildAppAndExpectSuccess(SetPropertyTest.class);
     }

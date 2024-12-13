@@ -17,7 +17,9 @@ jobs:
           java-version: ${{ matrix.java }}
           check-latest: true
       - name: Set up Maven settings.xml
-        run: Copy-Item -Path ".github/quarkus-snapshots-mvn-settings.xml" -Destination "$env:USERPROFILE/.m2/settings.xml"
+        run: |
+          Copy-Item -Path ".github\quarkus-snapshots-mvn-settings.xml" -Destination "$env:USERPROFILE\.m2\settings.xml"
+          Get-Content "$env:USERPROFILE\.m2\settings.xml"
       - name: Download Quarkus CLI
         shell: bash
         run: mvn -B --no-transfer-progress org.apache.maven.plugins:maven-dependency-plugin:get -Dartifact=io.quarkus:quarkus-cli:999-SNAPSHOT:jar:runner
@@ -36,4 +38,4 @@ jobs:
           # Need to set UTF-8 as otherwise the cp1252 is used on GH windows runner
           # TODO revisit this with Windows 2025 when available or when we move testing to JDK 21+ only
           export JAVA_TOOL_OPTIONS="-Dfile.encoding=UTF8"
-          mvn -B --no-transfer-progress -fae -s .github/quarkus-snapshots-mvn-settings.xml clean verify -f quarkus-cli -D"include.quarkus-cli-tests" -D"ts.quarkus.cli.cmd=$(pwd)\quarkus-dev-cli.bat" -D"gh-action-disable-on-win"
+          mvn -B --no-transfer-progress -fae -s .github/mvn-settings.xml clean verify -f quarkus-cli -D"include.quarkus-cli-tests" -D"ts.quarkus.cli.cmd=$(pwd)\quarkus-dev-cli.bat" -D"gh-action-disable-on-win"

@@ -2,7 +2,6 @@ package io.quarkus.ts.security.jpa;
 
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.condition.DisabledIfSystemProperty;
 
 import io.quarkus.test.bootstrap.OracleService;
 import io.quarkus.test.bootstrap.RestService;
@@ -12,7 +11,6 @@ import io.quarkus.test.services.QuarkusApplication;
 
 @Tag("QUARKUS-3866")
 @QuarkusScenario
-@DisabledIfSystemProperty(named = "ts.arm.missing.services.excludes", matches = "true", disabledReason = "https://github.com/quarkus-qe/quarkus-test-suite/issues/2022")
 public class OraclePlaintextExternalRolesJpaIT extends BaseJpaSecurityRealmIT {
 
     static final int ORACLE_PORT = 1521;

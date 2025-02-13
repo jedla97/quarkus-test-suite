@@ -8,10 +8,11 @@ jobs:
     name: Daily - Linux - JVM build - Latest Version
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
         java: [ 17, 21 ]
         profiles: [ "root-modules,http-modules,security-modules,spring-modules",
-                   "sql-db-modules",
+                   "sql-db-modules", "root-modules -pl build/podman/,build/docker -Dtest-ubi8-compatibility",
                    "messaging-modules,websockets-modules,monitoring-modules,cache-modules,test-tooling-modules,nosql-db-modules"]
     steps:
       - uses: actions/checkout@v4
@@ -25,6 +26,7 @@ jobs:
           check-latest: true
           cache: 'maven'
       - uses: ./.github/actions/prepare-quarkus-cli
+      - uses: ./.github/actions/use-docker-mirror
       - name: Test in JVM mode
         run: |
           mvn -fae -V -B --no-transfer-progress -fae clean verify -P ${{ matrix.profiles }} -Dinclude.quarkus-cli-tests -Dts.quarkus.cli.cmd="${PWD}/quarkus-dev-cli"
@@ -42,9 +44,10 @@ jobs:
     name: Daily - Linux - Native build - Latest Version
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
         java: [ 17 ]
-        image: [ "ubi-quarkus-graalvmce-builder-image:jdk-21", "ubi-quarkus-mandrel-builder-image:jdk-21" ]
+        image: [ "ubi9-quarkus-graalvmce-builder-image:jdk-21", "ubi9-quarkus-mandrel-builder-image:jdk-21", "ubi-quarkus-mandrel-builder-image:jdk-21 -Dtest-ubi8-compatibility" ]
         profiles: [ "root-modules,websockets-modules,test-tooling-modules,nosql-db-modules",
                    "http-modules,cache-modules",
                    "security-modules,spring-modules",
@@ -63,6 +66,7 @@ jobs:
           check-latest: true
           cache: 'maven'
       - uses: ./.github/actions/prepare-quarkus-cli
+      - uses: ./.github/actions/use-docker-mirror
       - name: Test in Native mode
         run: |
           mvn -fae -V -B --no-transfer-progress -P ${{ matrix.profiles }} -fae clean verify -Dnative \
@@ -82,6 +86,7 @@ jobs:
     name: Daily - Windows - JVM build - Latest Version
     runs-on: windows-latest
     strategy:
+      fail-fast: false
       matrix:
         java: [ 17, 21 ]
     steps:
@@ -129,6 +134,7 @@ jobs:
     name: Daily - Windows - Native build - Latest Version
     runs-on: windows-latest
     strategy:
+      fail-fast: false
       matrix:
         java: [ 17 ]
         graalvm-version: [ "mandrel-latest" ]

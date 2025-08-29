@@ -16,7 +16,7 @@ public class MongoClientMtlsIT extends AbstractMongoClientIT {
     @Container(image = "${mongodb.image}", port = 27017, expectedLog = "Waiting for connections", command = { "--config",
             "/etc/mongod.conf" }, mounts = { @Mount(from = "mongod.conf", to = "/etc/mongod.conf"),
                     @Mount(from = "mongo-certs/ca.pem", to = "/etc/ssl/ca.pem"),
-                    @Mount(from = "mongo-certs/mongodb.pem", to = "/etc/ssl/mongodb.pem") })
+                    @Mount(from = "mongo-certs/mongodb.pem", to = "/etc/ssl/mongodb.pem") }, portDockerHostToLocalhost = true)
     static MongoDbService database = new MongoDbService();
 
     @QuarkusApplication

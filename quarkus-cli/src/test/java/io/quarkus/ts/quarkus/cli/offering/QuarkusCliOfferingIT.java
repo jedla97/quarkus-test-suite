@@ -10,7 +10,11 @@ import static org.hamcrest.Matchers.containsString;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import jakarta.inject.Inject;
 
@@ -42,7 +46,7 @@ public abstract class QuarkusCliOfferingIT {
     public void listedExtensionShouldContainSupportScope() {
         QuarkusCliClient.Result result = cliClient.listExtensions("--support-scope");
         assertTrue(result.getOutput().contains(REST_EXTENSION_NAME)
-                && result.getOutput().contains(REST_EXTENSION_ARTIFACT),
+                        && result.getOutput().contains(REST_EXTENSION_ARTIFACT),
                 "--support-scope option output should contain" + REST_EXTENSION_ARTIFACT + ". Output: " + result.getOutput());
 
         String extensionLine = getExtensionLineFromListOutput(result, REST_EXTENSION_ARTIFACT);
@@ -53,10 +57,15 @@ public abstract class QuarkusCliOfferingIT {
     }
 
     @Test
-    public void createAndBuildAppWhenOfferingIsSet() {
+    public void createAndBuildAppWhenOfferingIsSet() throws IOException {
         // Check if it's possible to create and build app when the offering is set in registry
+        Path pathToTmpDirectory = Files.createTempDirectory("cli");
+        File pathToConfigInTmpDirectory = Paths.get(pathToTmpDirectory.toAbsolutePath().toString(), ".quarkus",
+                "config.yaml").toFile();
+        FileUtils.copyFile(QUARKUS_TEST_CONFIG, pathToConfigInTmpDirectory);
         QuarkusCliRestService app = cliClient.createApplication("app",
-                defaults().withExtensions(REST_EXTENSION_ARTIFACT, LANGCHAIN4J_OPENAI_EXTENSION_ARTIFACT));
+                defaults().withExtensions(REST_EXTENSION_ARTIFACT, LANGCHAIN4J_OPENAI_EXTENSION_ARTIFACT),
+                pathToTmpDirectory.toAbsolutePath().toString());
         assertCorrectPlatformBom(app.getFileFromApplication("pom.xml"), getQuarkusPlatformGroupId());
         QuarkusCliClient.Result result = app.buildOnJvm();
         assertTrue(result.isSuccessful(), "The application didn't build on JVM. Output: " + result.getOutput());

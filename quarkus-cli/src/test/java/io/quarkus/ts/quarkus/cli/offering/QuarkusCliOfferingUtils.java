@@ -25,8 +25,8 @@ import io.quarkus.test.bootstrap.QuarkusCliClient;
 public class QuarkusCliOfferingUtils {
 
     public static final File QUARKUS_CONFIG = Paths.get(System.getProperty("user.home"), ".quarkus", "config.yaml").toFile();
-    public static final File QUARKUS_CONFIG_BACKUP = Paths.get(System.getProperty("user.home"), ".quarkus",
-            "config.yaml.bck").toFile();
+    public static final File QUARKUS_TEST_CONFIG = Paths.get("target", ".quarkus",
+            "config.yaml").toFile();
 
     private static final String QUARKUS_REGISTRY_ID = "testingregistry";
 
@@ -64,13 +64,13 @@ public class QuarkusCliOfferingUtils {
         Yaml yaml = new Yaml(options);
 
         Map<String, Object> data;
-        try (InputStream inputStream = new FileInputStream(QUARKUS_CONFIG)) {
+        try (InputStream inputStream = new FileInputStream(QUARKUS_TEST_CONFIG)) {
             data = yaml.load(inputStream);
         }
 
         updateRegistryConfig((List<Object>) data.get("registries"), offering);
 
-        try (Writer writer = new FileWriter(QUARKUS_CONFIG)) {
+        try (Writer writer = new FileWriter(QUARKUS_TEST_CONFIG)) {
             yaml.dump(data, writer);
         }
     }

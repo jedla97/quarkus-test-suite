@@ -2,7 +2,7 @@ package io.quarkus.ts.quarkus.cli.offering;
 
 import static io.quarkus.test.bootstrap.QuarkusCliClient.CreateApplicationRequest.defaults;
 import static io.quarkus.ts.quarkus.cli.offering.QuarkusCliOfferingUtils.QUARKUS_CONFIG;
-import static io.quarkus.ts.quarkus.cli.offering.QuarkusCliOfferingUtils.QUARKUS_CONFIG_BACKUP;
+import static io.quarkus.ts.quarkus.cli.offering.QuarkusCliOfferingUtils.QUARKUS_TEST_CONFIG;
 import static io.quarkus.ts.quarkus.cli.offering.QuarkusCliOfferingUtils.assertCorrectPlatformBom;
 import static io.quarkus.ts.quarkus.cli.offering.QuarkusCliOfferingUtils.getExtensionLineFromListOutput;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -15,7 +15,6 @@ import java.io.IOException;
 import jakarta.inject.Inject;
 
 import org.apache.commons.io.FileUtils;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -36,13 +35,7 @@ public abstract class QuarkusCliOfferingIT {
 
     @BeforeAll
     public static void prepareConfigBackup() throws IOException {
-        FileUtils.copyFile(QUARKUS_CONFIG, QUARKUS_CONFIG_BACKUP);
-    }
-
-    @AfterAll
-    public static void restoreBackupConfig() throws IOException {
-        FileUtils.copyFile(QUARKUS_CONFIG_BACKUP, QUARKUS_CONFIG);
-        FileUtils.delete(QUARKUS_CONFIG_BACKUP);
+        FileUtils.copyFile(QUARKUS_CONFIG, QUARKUS_TEST_CONFIG);
     }
 
     @Test

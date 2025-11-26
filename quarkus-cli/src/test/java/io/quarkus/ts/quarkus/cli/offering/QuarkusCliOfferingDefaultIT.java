@@ -19,7 +19,6 @@ import jakarta.inject.Inject;
 import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
@@ -49,7 +48,6 @@ public class QuarkusCliOfferingDefaultIT {
     }
 
     @Test
-    @Order(Integer.MAX_VALUE)
     public void listExtensionsWithNoOffering() {
         QuarkusCliClient.Result result = cliClient.listExtensions("--support-scope");
         assertTrue(result.getOutput().contains(REST_EXTENSION_NAME)

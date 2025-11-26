@@ -11,6 +11,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.Writer;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -34,7 +36,8 @@ public class QuarkusCliOfferingUtils {
     public static final File QUARKUS_TEST_CONFIG = Paths.get("target", ".quarkus",
             "config.yaml").toFile();
 
-    private static final String QUARKUS_REGISTRY_ID = "testingregistry";
+    private static final String QUARKUS_TESTING_REGISTRY_ID = "testingregistry";
+    private static final String QUARKUS_PROD_REGISTRY_ID = "registry.quarkus.redhat.com";
     private static final String LANGCHAIN4J_ARTIFACT_ID_NAME = "quarkus-langchain4j-bom";
 
     public static String getExtensionLineFromListOutput(QuarkusCliClient.Result result, String extensionArtifactName) {
@@ -75,12 +78,24 @@ public class QuarkusCliOfferingUtils {
     }
 
     /**
-     * Load data from ~/.quarkus/config.yaml and update them
+     * Load data from ~/.quarkus/config.yaml and add the offering to testing registry {@link #QUARKUS_TESTING_REGISTRY_ID}
      *
      * @param offering offering value e.g. ibm, redhat
      * @throws IOException
      */
     public static void updateRegistryConfigFileWithOffering(String offering) throws IOException {
+        updateRegistryConfigFileWithOffering(offering, false);
+    }
+
+    /**
+     * Load data from ~/.quarkus/config.yaml and add the offering to testing registry {@link #QUARKUS_TESTING_REGISTRY_ID} and
+     * optionally to production registry {@link #QUARKUS_PROD_REGISTRY_ID}
+     *
+     * @param offering offering value e.g. ibm, redhat
+     * @param updateRedhatRegistry if the offering should be added to production registry {@link #QUARKUS_PROD_REGISTRY_ID}
+     * @throws IOException
+     */
+    public static void updateRegistryConfigFileWithOffering(String offering, boolean updateRedhatRegistry) throws IOException {
         DumperOptions options = new DumperOptions();
         options.setIndent(2);
         options.setPrettyFlow(true);
@@ -93,7 +108,12 @@ public class QuarkusCliOfferingUtils {
             data = yaml.load(inputStream);
         }
 
-        updateRegistryConfig((List<Object>) data.get("registries"), offering);
+        // Update testing registry and fail the test if the testing registry don't exist
+        updateRegistryConfig((List<Object>) data.get("registries"), QUARKUS_TESTING_REGISTRY_ID, offering);
+
+        if (updateRedhatRegistry) {
+            updateRegistryConfig((List<Object>) data.get("registries"), QUARKUS_PROD_REGISTRY_ID, offering);
+        }
 
         try (Writer writer = new FileWriter(QUARKUS_TEST_CONFIG)) {
             log.info("Quarkus config in use is: located at " + QUARKUS_TEST_CONFIG.getAbsolutePath()
@@ -103,24 +123,39 @@ public class QuarkusCliOfferingUtils {
     }
 
     /**
-     * Iterate over registries and add offering value to registry with name of {@link #QUARKUS_REGISTRY_ID}
+     * Iterate over registries and add offering value to registry
      *
      * @param registries list of all set registries
+     * @param registryId name of registry which offering should be added
      * @param offering offering value e.g. ibm, redhat
      */
-    private static void updateRegistryConfig(List<Object> registries, String offering) {
-        for (Object item : registries) {
+    private static void updateRegistryConfig(List<Object> registries, String registryId, String offering) {
+        var tmpRegistryList = new ArrayList<>(registries);
+        for (Object item : tmpRegistryList) {
             if (item instanceof Map) {
                 Map<String, Object> registryMap = (Map<String, Object>) item;
-                if (registryMap.containsKey(QUARKUS_REGISTRY_ID)) {
+                if (registryMap.containsKey(registryId)) {
                     // Get the testing registry and set the offering
-                    Map<String, Object> details = (Map<String, Object>) registryMap.get(QUARKUS_REGISTRY_ID);
+                    Map<String, Object> details = (Map<String, Object>) registryMap.get(registryId);
                     details.put("offering", offering);
+                    return;
+                }
+            } else if (item instanceof String) {
+                // This covers the cases where the registry is defined on one line without additional details
+                if (item.equals(registryId)) {
+                    Map<String, String> offeringMap = new LinkedHashMap<>();
+                    Map<String, Object> registryIdReplacement = new LinkedHashMap<>();
+
+                    offeringMap.put("offering", offering);
+                    registryIdReplacement.put((String) item, offeringMap);
+
+                    // replace the updated registry on same position as original registry
+                    registries.set(registries.indexOf(item), registryIdReplacement);
                     return;
                 }
             }
         }
-        Assertions.fail(QUARKUS_REGISTRY_ID + " registry is not present in quarkus config");
+        Assertions.fail(registryId + " registry is not present in quarkus config");
     }
 
     public static String getQuarkusVersionWithoutNumberSuffix() {

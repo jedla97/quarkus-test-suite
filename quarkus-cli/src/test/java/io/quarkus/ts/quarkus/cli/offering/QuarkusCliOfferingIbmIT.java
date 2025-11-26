@@ -27,11 +27,11 @@ public class QuarkusCliOfferingIbmIT extends QuarkusCliOfferingBase {
 
     @BeforeAll
     public static void setOfferingInConfigFile() throws IOException {
-        updateRegistryConfigFileWithOffering("ibm");
+        updateRegistryConfigFileWithOffering("ibm", true);
     }
 
     @Test
-    public void listedExtensionShouldContainSupportScopeForLangchain4jOpenAi() throws IOException {
+    public void listedExtensionShouldContainSupportScopeForLangchain4jOpenAi() {
         QuarkusCliClient.Result result = cliClient.listExtensions("--support-scope");
         assertTrue(result.getOutput().contains(LANGCHAIN4J_OPENAI_EXTENSION_NAME)
                 && result.getOutput().contains(LANGCHAIN4J_OPENAI_EXTENSION_ARTIFACT),

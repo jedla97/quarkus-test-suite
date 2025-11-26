@@ -29,11 +29,11 @@ public class QuarkusCliOfferingRedHatIT extends QuarkusCliOfferingBase {
 
     @BeforeAll
     public static void setOfferingInConfigFile() throws IOException {
-        updateRegistryConfigFileWithOffering("redhat");
+        updateRegistryConfigFileWithOffering("redhat", true);
     }
 
     @Test
-    public void listedExtensionShouldNotContainSupportScopeForLangchain4jOpenAi() throws IOException {
+    public void listedExtensionShouldNotContainSupportScopeForLangchain4jOpenAi() {
         QuarkusCliClient.Result result = cliClient.listExtensions("--support-scope");
         assertTrue(result.getOutput().contains(LANGCHAIN4J_OPENAI_EXTENSION_NAME)
                 && result.getOutput().contains(LANGCHAIN4J_OPENAI_EXTENSION_ARTIFACT),

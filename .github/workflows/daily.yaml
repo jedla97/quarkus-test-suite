@@ -59,7 +59,9 @@ jobs:
       - uses: ./.github/actions/use-docker-mirror
       - name: Test in JVM mode
         run: |
+          ls ~/.m2/repository/io/quarkus/quarkus-rest-jaxb/999-SNAPSHOT/
           mvn -fae -V -B --no-transfer-progress -fae clean verify -P ${{ matrix.profiles }} -Dinclude.quarkus-cli-tests -Dts.quarkus.cli.cmd="${PWD}/quarkus-dev-cli"
+          ls ~/.m2/repository/io/quarkus/quarkus-rest-jaxb/999-SNAPSHOT/
       - uses: ./.github/actions/zip-and-archive
         name: Zip and archive artifacts
         if: failure()

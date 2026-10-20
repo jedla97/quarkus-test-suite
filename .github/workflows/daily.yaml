@@ -70,7 +70,7 @@ jobs:
           PLATFORM_BUILD=3.40.999-core-3.40-SNAPSHOT MCP_BUILD=2.0.999-SNAPSHOT LANGCHAIN4J_BUILD=1.13.999-SNAPSHOT HTTP_PROBLEM_BUILD=999-SNAPSHOT QUARKUS_BUILD=${QUARKUS_BUILD} $GITHUB_WORKSPACE/.github/build_platform.sh
       - name: Build FW
         run: |
-          git clone -b fix-dependency-duplication https://github.com/jedla97/quarkus-test-framework.git && cd quarkus-test-framework
+          git clone -b fix-dependency-duplication-1.9 https://github.com/jedla97/quarkus-test-framework.git && cd quarkus-test-framework
           ./mvnw clean install -Pframework -DskipTests -Dmaven.repo.local=${{ env.LOCAL_REPO }}
       - name: Cache Build Outputs
         uses: actions/cache/save@v6

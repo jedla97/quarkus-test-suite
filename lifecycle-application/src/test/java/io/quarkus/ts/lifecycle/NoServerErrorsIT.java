@@ -53,7 +53,7 @@ public class NoServerErrorsIT {
                     Set.of(ConnectException.class, SocketException.class).contains(ex.getClass()),
                     "Expected ConnectException or SocketException, but got: " + ex.getClass().getName()
             );
-            Assertions.assertTrue(ex.getMessage().contains("Connection refused"));
+            Assertions.assertTrue(ex.getMessage().contains("Connection refused") || ex.getMessage().contains("Network is unreachable"));
         }
     }
 

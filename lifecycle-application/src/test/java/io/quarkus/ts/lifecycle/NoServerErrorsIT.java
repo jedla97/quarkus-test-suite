@@ -1,7 +1,6 @@
 package io.quarkus.ts.lifecycle;
 
 import java.net.ConnectException;
-import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.concurrent.CountDownLatch;
 import java.util.stream.Stream;
@@ -48,20 +47,10 @@ public class NoServerErrorsIT {
             app.given().get(endpoint);
             Assertions.fail("The connection should be rejected!");
         } catch (Exception ex) {
-            // Print all resolved addresses for localhost in priority order
-            InetAddress[] addrs = InetAddress.getAllByName("localhost");
-            System.out.println("=== RESOLVED LOCALHOST ADDRESSES ===");
-            for (InetAddress addr : addrs) {
-                System.out.println(" - " + addr.toString() + " (Is IPv6? " + (addr instanceof java.net.Inet6Address) + ")");
+            System.err.println("Main exception: " + ex.getClass().getName() + " - " + ex.getMessage());
+            for (Throwable suppressed : ex.getSuppressed()) {
+                System.err.println("Suppressed: " + suppressed.getClass().getName() + " - " + suppressed.getMessage());
             }
-
-// Print default primary address
-            InetAddress defaultAddr = InetAddress.getByName("localhost");
-            System.out.println("Default primary address: " + defaultAddr);
-
-// Check active System properties
-            System.out.println("preferIPv4Stack: " + System.getProperty("java.net.preferIPv4Stack"));
-            System.out.println("preferIPv6Addresses: " + System.getProperty("java.net.preferIPv6Addresses"));
             Assertions.assertEquals(ConnectException.class, ex.getClass());
             Assertions.assertTrue(ex.getMessage().contains("Connection refused"));
         }

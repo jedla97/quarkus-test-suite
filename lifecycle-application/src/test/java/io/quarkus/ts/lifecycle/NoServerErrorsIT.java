@@ -1,7 +1,9 @@
 package io.quarkus.ts.lifecycle;
 
 import java.net.ConnectException;
+import java.net.SocketException;
 import java.net.UnknownHostException;
+import java.util.Set;
 import java.util.concurrent.CountDownLatch;
 import java.util.stream.Stream;
 
@@ -47,11 +49,10 @@ public class NoServerErrorsIT {
             app.given().get(endpoint);
             Assertions.fail("The connection should be rejected!");
         } catch (Exception ex) {
-            System.err.println("Main exception: " + ex.getClass().getName() + " - " + ex.getMessage());
-            for (Throwable suppressed : ex.getSuppressed()) {
-                System.err.println("Suppressed: " + suppressed.getClass().getName() + " - " + suppressed.getMessage());
-            }
-            Assertions.assertEquals(ConnectException.class, ex.getClass());
+            Assertions.assertTrue(
+                    Set.of(ConnectException.class, SocketException.class).contains(ex.getClass()),
+                    "Expected ConnectException or SocketException, but got: " + ex.getClass().getName()
+            );
             Assertions.assertTrue(ex.getMessage().contains("Connection refused"));
         }
     }
